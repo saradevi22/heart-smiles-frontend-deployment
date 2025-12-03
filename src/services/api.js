@@ -3,7 +3,7 @@ import axios from 'axios';
 // Determine the base URL based on environment
 // Production (Vercel) backend URL
 // Note: Vercel deployment URLs may change - update this if you see a different URL
-const PRODUCTION_API_URL = 'https://heart-smiles-backend-deployment-6zzg-9xlm8auhs.vercel.app';
+const PRODUCTION_API_URL = 'https://heart-smiles-backend-deployment-6zzg-fjsexytwl.vercel.app';
 // Local development URL
 const LOCAL_API_URL = 'http://localhost:5001/api';
 
