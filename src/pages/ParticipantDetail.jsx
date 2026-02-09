@@ -166,12 +166,7 @@ const ParticipantDetail = () => {
                 </div>
               </div>
             )}
-            {participant.identificationNumber && (
-              <div>
-                <strong style={{ color: '#666', fontSize: '13px' }}>ID Number:</strong>
-                <div style={{ marginTop: '3px', color: '#333' }}>{participant.identificationNumber}</div>
-              </div>
-            )}
+
             {participant.school && (
               <div>
                 <strong style={{ color: '#666', fontSize: '13px' }}>School:</strong>
@@ -254,7 +249,7 @@ const ParticipantDetail = () => {
                     <div style={{ fontWeight: '500', color: '#333' }}>{program.name}</div>
                     {program.description && (
                       <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
-                        {program.description.length > 100 
+                        {program.description.length > 100
                           ? `${program.description.substring(0, 100)}...`
                           : program.description}
                       </div>
@@ -375,7 +370,7 @@ const ParticipantDetail = () => {
                     {photo.activity && <div><strong>Activity:</strong> {photo.activity}</div>}
                     {photo.uploadedAt && (
                       <div style={{ marginTop: '3px', fontSize: '11px', color: '#999' }}>
-                        {photo.uploadedAt.seconds 
+                        {photo.uploadedAt.seconds
                           ? new Date(photo.uploadedAt.seconds * 1000).toLocaleDateString()
                           : new Date(photo.uploadedAt).toLocaleDateString()}
                       </div>
@@ -451,28 +446,28 @@ const ParticipantDetail = () => {
                   };
 
                   let filteredNotes = notes;
-                  
+
                   if (dateFilterStart || dateFilterEnd) {
                     filteredNotes = notes.filter(note => {
                       const noteDate = getNoteDate(note);
                       if (!noteDate) return false;
-                      
+
                       const startDate = dateFilterStart ? new Date(dateFilterStart) : null;
                       const endDate = dateFilterEnd ? new Date(dateFilterEnd) : null;
-                      
+
                       if (startDate) {
                         startDate.setHours(0, 0, 0, 0);
                       }
                       if (endDate) {
                         endDate.setHours(23, 59, 59, 999);
                       }
-                      
+
                       const noteDateOnly = new Date(noteDate);
                       noteDateOnly.setHours(0, 0, 0, 0);
-                      
+
                       const afterStart = !startDate || noteDateOnly >= startDate;
                       const beforeEnd = !endDate || noteDateOnly <= endDate;
-                      
+
                       return afterStart && beforeEnd;
                     });
                   }
@@ -503,7 +498,7 @@ const ParticipantDetail = () => {
                   document.body.appendChild(link);
                   link.click();
                   document.body.removeChild(link);
-                  
+
                   setSuccess(`Downloaded ${filteredNotes.length} note(s) as CSV`);
                   setTimeout(() => setSuccess(''), 3000);
                 }}

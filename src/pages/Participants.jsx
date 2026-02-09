@@ -17,7 +17,6 @@ const Participants = () => {
     dateOfBirth: '',
     address: '',
     school: '',
-    identificationNumber: '',
     programs: []
   });
   // Details for creating a new participant 
@@ -57,7 +56,6 @@ const Participants = () => {
         dateOfBirth: '',
         address: '',
         school: '',
-        identificationNumber: '',
         programs: []
       });
       await loadParticipants();
@@ -65,7 +63,7 @@ const Participants = () => {
     } catch (error) {
       console.error('Error creating participant:', error);
       console.error('Error response:', error?.response?.data);
-      
+
       // Handle different error response formats
       let errorMessage = 'Failed to create participant';
       if (error?.response?.data) {
@@ -79,7 +77,7 @@ const Participants = () => {
       } else if (error?.message) {
         errorMessage = error.message;
       }
-      
+
       // Handle token expiration specifically
       if (errorMessage.includes('expired') || errorMessage.includes('Token expired')) {
         setError('Your session has expired. You will be redirected to login.');
@@ -125,11 +123,11 @@ const Participants = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center', 
-        marginBottom: '30px' 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '30px'
       }}>
         <h1>Participants</h1>
         {user?.role === 'heartSmiles' && (
@@ -186,9 +184,9 @@ const Participants = () => {
         }}>
           <h3 style={{ margin: '0 0 20px 0' }}>Add New Participant</h3>
           <form onSubmit={handleSubmit}>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
               gap: '15px',
               marginBottom: '20px'
             }}>
@@ -262,24 +260,7 @@ const Participants = () => {
                   }}
                 />
               </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '5px', fontWeight: '500' }}>
-                  ID Number *
-                </label>
-                <input
-                  type="text"
-                  name="identificationNumber"
-                  value={formData.identificationNumber}
-                  onChange={handleInputChange}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px'
-                  }}
-                />
-              </div>
+
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
               <button
@@ -352,7 +333,7 @@ const Participants = () => {
                   </div>
                   <div style={{ fontSize: '14px', color: '#666' }}>
                     {participant.school && `School: ${participant.school}`}
-                    {participant.identificationNumber && ` • ID: ${participant.identificationNumber}`}
+
                   </div>
                   {participant.programs && participant.programs.length > 0 && (
                     <div style={{ fontSize: '12px', color: '#007bff', marginTop: '5px' }}>
