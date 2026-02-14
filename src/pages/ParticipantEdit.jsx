@@ -11,35 +11,28 @@ const ParticipantEdit = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  
+
   // Image upload state
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imageType, setImageType] = useState('headshot'); // 'headshot' or 'program'
   const [photoCaption, setPhotoCaption] = useState('');
   const [photoActivity, setPhotoActivity] = useState('');
   const [photoDate, setPhotoDate] = useState('');
-  
+
   // Note state
   const [noteContent, setNoteContent] = useState('');
   const [noteType, setNoteType] = useState('general');
   const [noteDate, setNoteDate] = useState('');
   const [addingNote, setAddingNote] = useState(false);
-  
+
   // Program state
   const [allPrograms, setAllPrograms] = useState([]);
   const [programSearchTerm, setProgramSearchTerm] = useState('');
   const [addProgramId, setAddProgramId] = useState('');
 
-  useEffect(() => {
-    if (user?.role !== 'heartSmiles') {
-      navigate('/participants');
-      return;
-    }
-    loadParticipant();
-    loadAllPrograms();
-  }, [id, user]);
-  
-  const loadAllPrograms = async () => {
+
+
+  const loadAllPrograms = React.useCallback(async () => {
     try {
       const resp = await fetchPrograms();
       const allPrograms = resp.data?.programs || resp.data || [];
@@ -49,9 +42,9 @@ const ParticipantEdit = () => {
     } catch (err) {
       // not fatal
     }
-  };
+  }, []);
 
-  const loadParticipant = async () => {
+  const loadParticipant = React.useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -63,7 +56,16 @@ const ParticipantEdit = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (user?.role !== 'heartSmiles') {
+      navigate('/participants');
+      return;
+    }
+    loadParticipant();
+    loadAllPrograms();
+  }, [id, user, navigate, loadParticipant, loadAllPrograms]);
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -146,7 +148,7 @@ const ParticipantEdit = () => {
       setNoteContent('');
       setNoteType('general');
       setNoteDate('');
-      
+
       // Reload participant data
       await loadParticipant();
       setTimeout(() => setSuccess(''), 3000);
@@ -646,7 +648,7 @@ const ParticipantEdit = () => {
           <h3 style={{ margin: '0 0 20px 0', color: '#333', borderBottom: '2px solid #667eea', paddingBottom: '10px' }}>
             Programs ({participant.programDetails?.length || participant.programs?.length || 0})
           </h3>
-          
+
           {(participant.programDetails?.length > 0 || participant.programs?.length > 0) && (
             <div style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
@@ -669,7 +671,7 @@ const ParticipantEdit = () => {
                       <div style={{ fontWeight: '500', color: '#333' }}>{program.name}</div>
                       {program.description && (
                         <div style={{ fontSize: '12px', color: '#666', marginTop: '3px' }}>
-                          {program.description.length > 100 
+                          {program.description.length > 100
                             ? `${program.description.substring(0, 100)}...`
                             : program.description}
                         </div>
@@ -741,7 +743,7 @@ const ParticipantEdit = () => {
                     const filteredPrograms = allPrograms.filter(program => {
                       const isNotInParticipant = !participantProgramIds.includes(program.id);
                       const searchTerm = e.target.value.toLowerCase();
-                      const matchesSearch = !searchTerm || 
+                      const matchesSearch = !searchTerm ||
                         program.name.toLowerCase().includes(searchTerm) ||
                         program.description?.toLowerCase().includes(searchTerm);
                       return isNotInParticipant && matchesSearch;
@@ -778,7 +780,7 @@ const ParticipantEdit = () => {
                   }
                   return true;
                 });
-                
+
                 if (filteredPrograms.length > 0) {
                   return (
                     <select

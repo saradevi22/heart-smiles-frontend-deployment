@@ -48,13 +48,13 @@ const ProgramsEdit = () => {
         startDate: p.startDate ? (p.startDate.seconds ? new Date(p.startDate.seconds * 1000).toISOString().split('T')[0] : p.startDate.slice(0, 10)) : '',
         endDate: p.endDate ? (p.endDate.seconds ? new Date(p.endDate.seconds * 1000).toISOString().split('T')[0] : p.endDate.slice(0, 10)) : '',
       });
-      
+
       // Set program participants
       if (p.participantDetails && p.participantDetails.length > 0) {
         setProgramParticipants(p.participantDetails);
       } else if (p.participants && p.participants.length > 0) {
         // If participantDetails not available, fetch them
-        const participantPromises = p.participants.map(pid => 
+        const participantPromises = p.participants.map(pid =>
           fetchParticipants().then(res => {
             const participants = res.data?.participants || res.data || [];
             return participants.find(p => p.id === pid);
@@ -118,13 +118,13 @@ const ProgramsEdit = () => {
     try {
       setUploading(true);
       setError('');
-      
+
       const formData = new FormData();
       formData.append('image', file);
       formData.append('type', 'program');
       formData.append('folder', 'heart-smiles/programs');
 
-      const uploadResponse = await uploadImage(formData);
+      await uploadImage(formData);
       // For now, we'll just show success. Photo storage for programs can be added later.
       setSuccess('Photo uploaded successfully!');
       setTimeout(() => setSuccess(''), 3000);
@@ -441,7 +441,7 @@ const ProgramsEdit = () => {
           <h3 style={{ margin: '0 0 20px 0', color: '#333', borderBottom: '2px solid #667eea', paddingBottom: '10px' }}>
             Participants ({programParticipants.length})
           </h3>
-          
+
           {programParticipants.length > 0 && (
             <div style={{ marginBottom: '20px' }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
@@ -510,9 +510,8 @@ const ProgramsEdit = () => {
                     const filtered = allParticipants.filter(ap => {
                       const isNotInProgram = !participantIds.includes(ap.id);
                       const searchValue = e.target.value.toLowerCase();
-                      const matchesSearch = !searchValue || 
+                      const matchesSearch = !searchValue ||
                         ap.name.toLowerCase().includes(searchValue) ||
-                        ap.identificationNumber?.toLowerCase().includes(searchValue) ||
                         ap.school?.toLowerCase().includes(searchValue);
                       return isNotInProgram && matchesSearch;
                     });
@@ -543,13 +542,12 @@ const ProgramsEdit = () => {
                   // Match search term if provided
                   if (searchLower) {
                     const nameMatch = ap.name?.toLowerCase().includes(searchLower);
-                    const idMatch = ap.identificationNumber?.toLowerCase().includes(searchLower);
                     const schoolMatch = ap.school?.toLowerCase().includes(searchLower);
-                    return nameMatch || idMatch || schoolMatch;
+                    return nameMatch || schoolMatch;
                   }
                   return true;
                 });
-                
+
                 if (filteredParticipants.length > 0) {
                   return (
                     <select
@@ -568,7 +566,7 @@ const ProgramsEdit = () => {
                       <option value="">Select a participant...</option>
                       {filteredParticipants.map(ap => (
                         <option key={ap.id} value={ap.id}>
-                          {ap.name} {ap.identificationNumber && `(${ap.identificationNumber})`} {ap.school && `- ${ap.school}`}
+                          {ap.name} {ap.school && `- ${ap.school}`}
                         </option>
                       ))}
                     </select>

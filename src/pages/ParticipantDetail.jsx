@@ -16,9 +16,9 @@ const ParticipantDetail = () => {
 
   useEffect(() => {
     loadParticipant();
-  }, [id]);
+  }, [loadParticipant]);
 
-  const loadParticipant = async () => {
+  const loadParticipant = React.useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -30,7 +30,7 @@ const ParticipantDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   if (loading) {
     return (
@@ -315,7 +315,7 @@ const ParticipantDetail = () => {
               <div key={photo.id || index} style={{ position: 'relative' }}>
                 <img
                   src={photo.url}
-                  alt={`Photo ${index + 1}`}
+                  alt={`Upload ${index + 1}`}
                   style={{
                     width: '100%',
                     height: '200px',
