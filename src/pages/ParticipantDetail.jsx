@@ -14,9 +14,7 @@ const ParticipantDetail = () => {
   const [dateFilterStart, setDateFilterStart] = useState('');
   const [dateFilterEnd, setDateFilterEnd] = useState('');
 
-  useEffect(() => {
-    loadParticipant();
-  }, [loadParticipant]);
+
 
   const loadParticipant = React.useCallback(async () => {
     try {
@@ -31,6 +29,10 @@ const ParticipantDetail = () => {
       setLoading(false);
     }
   }, [id]);
+
+  useEffect(() => {
+    loadParticipant();
+  }, [loadParticipant]);
 
   if (loading) {
     return (
