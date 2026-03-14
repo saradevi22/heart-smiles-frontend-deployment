@@ -135,9 +135,8 @@ const ProgramsDetail = () => {
     // Match search term if provided
     if (searchLower) {
       const nameMatch = ap.name?.toLowerCase().includes(searchLower);
-      const idMatch = ap.identificationNumber?.toLowerCase().includes(searchLower);
       const schoolMatch = ap.school?.toLowerCase().includes(searchLower);
-      return nameMatch || idMatch || schoolMatch;
+      return nameMatch || schoolMatch;
     }
     return true;
   });
@@ -357,7 +356,6 @@ const ProgramsDetail = () => {
                       const searchValue = e.target.value.toLowerCase();
                       const matchesSearch = !searchValue || 
                         ap.name.toLowerCase().includes(searchValue) ||
-                        ap.identificationNumber?.toLowerCase().includes(searchValue) ||
                         ap.school?.toLowerCase().includes(searchValue);
                       return isNotInProgram && matchesSearch;
                     });
@@ -365,7 +363,7 @@ const ProgramsDetail = () => {
                       setAddParticipantId('');
                     }
                   }}
-                  placeholder="Search by name, ID number, or school..."
+                  placeholder="Search by name or school..."
                   style={{
                     width: '100%',
                     padding: '8px 12px',
@@ -393,7 +391,7 @@ const ProgramsDetail = () => {
                   <option value="">Select a participant...</option>
                   {filteredParticipants.map(ap => (
                     <option key={ap.id} value={ap.id}>
-                      {ap.name} {ap.identificationNumber && `(${ap.identificationNumber})`} {ap.school && `- ${ap.school}`}
+                      {ap.name} {ap.school && `- ${ap.school}`}
                     </option>
                   ))}
                 </select>

@@ -137,7 +137,6 @@ const Export = () => {
           // Get participant data
           const name = participant.name || 'N/A';
           const address = participant.address || 'N/A';
-          const idNumber = participant.identificationNumber || 'N/A';
           const photoUrl = participant.headshotPictureUrl?.url || participant.headshotPictureUrl || null;
 
           // Draw border for participant card
@@ -168,12 +167,6 @@ const Export = () => {
           pdf.setFont(undefined, 'bold');
           pdf.text(name, textX, textY);
           textY += 7;
-
-          // ID Number
-          pdf.setFontSize(10);
-          pdf.setFont(undefined, 'normal');
-          pdf.text(`ID: ${idNumber}`, textX, textY);
-          textY += 6;
 
           // Address (may need to wrap)
           pdf.setFontSize(9);
@@ -207,7 +200,6 @@ const Export = () => {
     const searchLower = searchTerm.toLowerCase();
     return (
       p.name?.toLowerCase().includes(searchLower) ||
-      p.identificationNumber?.toLowerCase().includes(searchLower) ||
       p.address?.toLowerCase().includes(searchLower)
     );
   });
@@ -357,7 +349,7 @@ const Export = () => {
         {showPdfExport && (
           <div>
             <p style={{ color: '#666', marginBottom: '20px', fontSize: '14px' }}>
-              Select participants to export as PDF. The PDF will include name, address, ID number, and profile photo, with two participants per page.
+              Select participants to export as PDF. The PDF will include name, address, and profile photo, with two participants per page.
             </p>
 
             {/* Search Box */}
@@ -369,7 +361,7 @@ const Export = () => {
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Search by name, ID number, or address..."
+                placeholder="Search by name or address..."
                 style={{
                   width: '100%',
                   padding: '8px 12px',
@@ -453,8 +445,7 @@ const Export = () => {
                       <div style={{ flex: 1 }}>
                         <div style={{ fontWeight: '500', color: '#333' }}>{participant.name}</div>
                         <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
-                          ID: {participant.identificationNumber || 'N/A'}
-                          {participant.address && ` • ${participant.address}`}
+                          {participant.address && participant.address}
                         </div>
                       </div>
                     </div>
@@ -491,7 +482,7 @@ const Export = () => {
               fontSize: '13px',
               color: '#666'
             }}>
-              <strong>Note:</strong> The PDF will include two participants per page with their profile photos, names, addresses, and ID numbers.
+              <strong>Note:</strong> The PDF will include two participants per page with their profile photos, names, and addresses.
             </div>
           </div>
         )}
